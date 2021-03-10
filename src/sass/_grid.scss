@@ -1,0 +1,5 @@
+.grid-template{
+    display: grid;
+    grid-template-columns: [full-start] minmax(5rem, 1fr) [center-start] repeat(auto-fit, minmax(20rem, 1fr)) [center-end] minmax(5rem, 1fr) [full-end];
+    grid-row-gap: 5rem;
+}
