@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { combineLatest, fromEvent } from 'rxjs';
-import { buffer } from 'rxjs/operators';
+import { all, create } from 'mathjs';
 
 
 @Component({
@@ -9,57 +8,88 @@ import { buffer } from 'rxjs/operators';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild('cartesianPlane') cartesian: any;
   @ViewChild('canvas') canvas: any;
 
-  planeCtx: any;
+  coordinateCloser = {
+    value: 0,
+    red:{
+      x: 0,
+      y: 0
+    },
+    yellow: {
+      x: 0,
+      y: 0
+    }
+  }
+
+  coordinateRed = {
+    x: 0,
+    y: 0
+  }
+
+  coordinateYellow = {
+    x: 0,
+    y: 0
+  }
+
+  red: any = [];
+  yellow: any = [];
   ctx: any;
-  
   constructor(){}
 
-  ngAfterViewInit(): void {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-    this.planeCtx = this.cartesian.nativeElement.getContext('2d');
 
-    this.ctx.translate(750, 375);
+  drawPath(): void{
+    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.ctx.translate(250, 250);
     this.ctx.beginPath();
-    this.ctx.moveTo(-275, 0);
-    this.ctx.lineTo(275, 0);
+    this.ctx.moveTo(-230, 0);
+    this.ctx.lineTo(230, 0);
     this.ctx.stroke();
-    this.ctx.moveTo(0, -275);
-    this.ctx.lineTo(0, 275);
+    this.ctx.moveTo(0, -230);
+    this.ctx.lineTo(0, 230);
     this.ctx.stroke();
 
     this.ctx.font = '2rem Arial';
-    this.ctx.fillText('+ x', 275, -10);
-    this.ctx.fillText('- y', 10, 275);
+    this.ctx.fillText('+ x', 220, -10);
+    this.ctx.fillText('- y', 10, 220);
 
-    this.ctx.fillText('- x', -275, -10);
-    this.ctx.fillText('+ y', 10, -275);
-
-    this.captureEventsOverCartesian(this.cartesian.nativeElement);
+    this.ctx.fillText('- x', -220, -10);
+    this.ctx.fillText('+ y', 10, -220);
   }
 
-  captureEventsOverCartesian(canvasEl: HTMLCanvasElement): void{
-    const rect = canvasEl.getBoundingClientRect();
-    const click$: any = fromEvent(canvasEl, 'click');
-
-    click$.subscribe(_ => {
-      console.log('click');      
-    });
-
-    let doubleClick = 
-    click$.buffer((_: any) => click$.debounce(300))
-    .map((clickWithIn300ms: any) => clickWithIn300ms.length)
-    .filter((clickWithIn300ms: any) => )
-
-      
-    
-    // this.addCoordinate((clickEvent.clientX - rect.left - 10), (clickEvent.clientY - rect.top - 10));
+  ngAfterViewInit(): void {
+    this.drawPath();
   }
 
-  addCoordinate(x: number, y: number): void{
-    this.planeCtx.fillStyle = '#F9DC5C';
-    this.planeCtx.fillRect(x, y, 20, 20);
+  calculate(): void{
+    const math: any = create(all, {});
+    if(this.red && this.yellow){
+      this.red.forEach((red: any) => {
+        this.yellow.forEach((yellow: any) => {
+          const hipotenusa = math.evaluate(`sqrt(pow((${yellow.x}-${red.x}),2) + pow((${yellow.y} - ${red.y}) ,2))`);
+          if(this.coordinateCloser.value === 0 || hipotenusa < this.coordinateCloser.value){
+            this.coordinateCloser.value = hipotenusa;
+            this.coordinateCloser.red.x = red.x;
+            this.coordinateCloser.red.y = red.y;
+            this.coordinateCloser.yellow.x = yellow.x;
+            this.coordinateCloser.yellow.y = yellow.y;
+          }
+        });
+      });
+      this.addLine(this.coordinateCloser.red, this.coordinateCloser.yellow);
+    }
+  }
+
+  addLine(p1: any, p2: any): void{
+    this.ctx.moveTo(p2.x, p1.y);
+    this.ctx.lineTo(p1.x, p2.y);
+    this.ctx.stroke();    
+    this.ctx.strokeStyle = "#FF0000";
+  }
+
+  addCoordinate(x: number, y: number, color: string, type: Array<{}>): void{    
+    type.push({x:x, y: y *= -1 });
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(x, y, 20, 20);
   }
 }

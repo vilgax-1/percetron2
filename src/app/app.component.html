@@ -1,4 +1,63 @@
-<main class="grid-template">
-  <canvas class="cartesian__plane" width="1500" height="750" #canvas></canvas>
-  <canvas class="cartesian__draw" width="1500" height="750" #cartesianPlane ></canvas>
+<main class="container">
+  <div class="grid-template">
+    
+    <div class="container__red">
+      <h2>Coordenadas Rojas</h2>
+      <div class="coordinate">
+        <div *ngFor="let item of red" class="row">
+          <div class="coordinate__x">
+            <label class="coordinate__text">X: </label>
+            <input class="coordinate__input" disabled [value]="item.x"> 
+          </div>
+          <div class="coordinate__y">
+            <label class="coordinate__text">Y: </label>
+            <input class="coordinate__input" disabled [value]="item.y">
+          </div>
+        </div>
+        <div class="row">
+          <div class="coordinate__x">
+            <label class="coordinate__text">X: </label>
+            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinateRed.x"> 
+          </div>
+          <div class="coordinate__y">
+            <label class="coordinate__text">Y: </label>
+            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinateRed.y">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-red" (click)="addCoordinate(coordinateRed.x, coordinateRed.y, '#EF280F', red)">Add</button>
+    </div>
+  
+    <canvas class="cartesian__plane" width="500" height="500" #canvas></canvas>
+  
+    <div class="container__yellow">
+      <h2>Coordenadas Amarillas</h2>
+      <div class="coordinate">
+        <div *ngFor="let item of yellow" class="row">
+          <div class="coordinate__x">
+            <label class="coordinate__text">X: </label>
+            <input class="coordinate__input" disabled [value]="item.x"> 
+          </div>
+          <div class="coordinate__y">
+            <label class="coordinate__text">Y: </label>
+            <input class="coordinate__input" disabled [value]="item.y">
+          </div>
+        </div>
+        <div class="row">
+          <div class="coordinate__x">
+            <label class="coordinate__text">X: </label>
+            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinateYellow.x"> 
+          </div>
+          <div class="coordinate__y">
+            <label class="coordinate__text">Y: </label>
+            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinateYellow.y">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-yellow" (click)="addCoordinate(coordinateYellow.x, coordinateYellow.y, '#F9DC5C', yellow)">Add</button>
+    </div>
+    <div class="container__button">
+      <button class="btn btn-blue" (click)="calculate()">Calcular</button>
+    </div>
+  </div>
 </main>
