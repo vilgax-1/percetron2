@@ -2,62 +2,47 @@
   <div class="grid-template">
     
     <div class="container__red">
-      <h2>Coordenadas Rojas</h2>
       <div class="coordinate">
-        <div *ngFor="let item of red" class="row">
+        <div class="coordinate__x">
+          <label class="coordinate__text">Tasa de aprendizaje: </label>
+          <input type="number" class="coordinate__input" [value]="tasa_de_aprendizaje">
+        </div>
+      </div>
+      <h2>Agregar Coordenadas</h2>
+      <div class="coordinate">
+        <div *ngFor="let coordinate of arrayCoordinates" class="row">
           <div class="coordinate__x">
             <label class="coordinate__text">X: </label>
-            <input class="coordinate__input" disabled [value]="item.x"> 
+            <input class="coordinate__input" disabled [value]="coordinate.x"> 
           </div>
           <div class="coordinate__y">
             <label class="coordinate__text">Y: </label>
-            <input class="coordinate__input" disabled [value]="item.y">
+            <input class="coordinate__input" disabled [value]="coordinate.y">
+          </div>
+          <div class="coordinate__color">
+            <label class="coordinate__text">Color: </label>
+            <input class="coordinate__input" disabled [value]="coordinate.color">
           </div>
         </div>
         <div class="row">
           <div class="coordinate__x">
             <label class="coordinate__text">X: </label>
-            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinateRed.x"> 
+            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinate.x"> 
           </div>
           <div class="coordinate__y">
             <label class="coordinate__text">Y: </label>
-            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinateRed.y">
+            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinate.y">
           </div>
         </div>
       </div>
-      <button class="btn btn-red" (click)="addCoordinate(coordinateRed.x, coordinateRed.y, '#EF280F', red)">Add</button>
+      <button class="btn btn-red" (click)="addCoordinate(coordinate.x, coordinate.y)">Agregar</button>
     </div>
-  
     <canvas class="cartesian__plane" width="500" height="500" #canvas></canvas>
-  
-    <div class="container__yellow">
-      <h2>Coordenadas Amarillas</h2>
-      <div class="coordinate">
-        <div *ngFor="let item of yellow" class="row">
-          <div class="coordinate__x">
-            <label class="coordinate__text">X: </label>
-            <input class="coordinate__input" disabled [value]="item.x"> 
-          </div>
-          <div class="coordinate__y">
-            <label class="coordinate__text">Y: </label>
-            <input class="coordinate__input" disabled [value]="item.y">
-          </div>
-        </div>
-        <div class="row">
-          <div class="coordinate__x">
-            <label class="coordinate__text">X: </label>
-            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinateYellow.x"> 
-          </div>
-          <div class="coordinate__y">
-            <label class="coordinate__text">Y: </label>
-            <input type="number" min="-250" max="250" class="coordinate__input" [(ngModel)]="coordinateYellow.y">
-          </div>
-        </div>
-      </div>
-      <button class="btn btn-yellow" (click)="addCoordinate(coordinateYellow.x, coordinateYellow.y, '#F9DC5C', yellow)">Add</button>
+    <div class="coordinate">
+      <p>Vueltas: {{ ages }}</p>
     </div>
     <div class="container__button">
-      <button class="btn btn-blue" (click)="calculate()">Calcular</button>
+      <button class="btn btn-red" (click)="startTrain()">Entrenar</button>
     </div>
   </div>
 </main>

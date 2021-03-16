@@ -40,7 +40,7 @@
     flex-direction: column;
     padding: 1.5rem 0;
 
-    &__x, &__y{
+    &__x, &__y, &__color{
         display: flex;
         align-items: center;
     }
