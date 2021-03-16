@@ -44,10 +44,10 @@ export class AppComponent implements AfterViewInit {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       coordinates: this.fb.array([
-        { x: -75, y: -25, color: 1 },
-        { x: 50, y: 50, color: 0 },
-        { x: -33, y: -45, color: 1 },
-        { x: 100, y: 50, color: 0 },
+        { x: -175, y: -75, color: 1 },
+        { x: 150, y: 95, color: 0 },
+        { x: -133, y: -45, color: 1 },
+        { x: 100, y: 105, color: 0 },
       ]),
     });
   }
@@ -64,11 +64,11 @@ export class AppComponent implements AfterViewInit {
     this.ctx.stroke();
 
     this.ctx.font = '2rem Arial';
-    this.ctx.fillText('+ x', 220, -10);
-    this.ctx.fillText('- y', 10, 220);
+    this.ctx.fillText('+x', 220, -10);
+    this.ctx.fillText('-y', 10, 220);
 
-    this.ctx.fillText('- x', -220, -10);
-    this.ctx.fillText('+ y', 10, -220);
+    this.ctx.fillText('-x', -220, -10);
+    this.ctx.fillText('+y', 10, -220);
   }
 
   ngAfterViewInit() {
@@ -147,7 +147,7 @@ export class AppComponent implements AfterViewInit {
 
     yellow.forEach((yellow: any) => {
       red.forEach((red: any) => {
-        const hipotenusa = math.evaluate(`sqrt(pow((${yellow.x}-${red.x}),2) + pow((${yellow.y} - ${red.y}) ,2))`);        
+        const hipotenusa = math.evaluate(`sqrt(pow((${yellow.x}-${red.x}),2) + pow((${yellow.y} - ${red.y}) ,2))`);                
         if (coordinateCloser.value === 0 || hipotenusa < coordinateCloser.value) {
           coordinateCloser.value = hipotenusa;
           coordinateCloser.red.x = red.x;
@@ -179,8 +179,9 @@ export class AppComponent implements AfterViewInit {
   }
 
   addLine(p1: any, p2: any): void {
-    this.ctx.moveTo(p1.x, p1.y);
-    this.ctx.lineTo(p2.x, p2.y);
+    this.ctx.beginPath();
+    this.ctx.moveTo(p2.x,(p1.y *= -1));
+    this.ctx.lineTo(p1.x, (p2.y*=-1));
     this.ctx.stroke();
   }
 }
